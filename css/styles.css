@@ -5,15 +5,15 @@ p{
 }
 
 /*use class selector to define style for elements*/
-.mun_keksima{
-    background-color: aquamarine;
-}
-
 .fancy{
     color: green;
     border: 2px;
-    background-color: aquamarine;
+    background-color: red;
     border-radius: 8px;
+}
+
+.mun_keksima{
+    background-color: aquamarine;
 }
 
 /*use id selector to define style*/
