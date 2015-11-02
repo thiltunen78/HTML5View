@@ -1,6 +1,3 @@
-
-
-
 console.log("here we go!");
 
 //wait document ready event
@@ -23,18 +20,40 @@ $(document).ready(function(){
     };
     
     $.ajax(setting).done(function(data){ // lähetä pyyntö ja käsittele saatu data
+        
         console.log(data);
         
+        //get all keys(attribute names) from json object
+        console.log(Object.keys(data.rows[0]));
+        
+        // create headers also dynamically
+        if(data.rows.length > 0){ //check that there are elements in array       
+            var headers = Object.keys(data.rows[0]);
+            
+            var row = $("<tr></tr>"); // create tr element
+            for(var i=1;i<headers.length;i++){
+            
+                // create header and add it to row
+                $("<th>" + headers[i] + "</th>").appendTo(row);
+                
+                // add row to thead element
+                $(row).appendTo("thead");
+            }
+        }
+        
+        // create table content dynamically
         for(var i=0;i<data.rows.length;i++){
             
             var html =  "<tr>" +
                         "<td>" + data.rows[i].name + "</td>" +
                         "<td>" + data.rows[i].address + "</td>" +
                         "<td>" + data.rows[i].age + "</td>" +
+                        "<td>" + data.rows[i].UUSISARAKE + "</td>" +
                         "</tr>";
             
             $(html).appendTo("tbody");
-        };
+        };        
+        
     }); 
 })
 
