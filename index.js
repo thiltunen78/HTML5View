@@ -1,5 +1,6 @@
 var express = require("express"); // ladataan moduuli omaan käyttöön
 var path = require("path");
+var bodyParser = require("body-parser");
 var database = require('./modules/database');
 var queries = require('./modules/queries');
 var person = require('./modules/person')
@@ -7,6 +8,10 @@ var person = require('./modules/person')
 var app = express(); // luodaan serveri
 
 // =======================MIDDLEWARES=============================
+
+//bodyparser json() middleware parses the json object from http post request
+app.use(bodyParser.urlencoded());
+
 app.use(function(req,res,next){
     
     console.log(req.method);
@@ -15,6 +20,8 @@ app.use(function(req,res,next){
     
     console.log(database.Person);
     database.myFunction();
+    
+    console.log(req.body);
     
     // send request forward in stack
     next();

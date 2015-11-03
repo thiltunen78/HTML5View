@@ -1,8 +1,52 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="fi">
     <head>
+        <meta charset="utf-8">
+        <title>Add new contact info</title>
+        <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <link href="/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <h1>Add new contact info</h1>    
+        <h1>Add new contact info</h1>   
+        
+        <form method="post" enctype="application/json" action="/persons">
+            <input type="text" required placeholder="Your full name" name="name"/>
+            <input type="text" required placeholder="Your full address" name="address"/>
+            <input type="number" required placeholder="Your age" name="age"/>
+            
+            <input type="submit" value="Send"/>
+        </form>
+        
+<!--
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputName" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputAddress" class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputAddress" placeholder="Address">
+                </div>
+            </div>        
+            <div class="form-group">
+                <label for="inputAge" class="col-sm-2 control-label">Age</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="inputAge" placeholder="Age">
+                </div>
+            </div>     
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" SubmitPerson="">Submit</button>
+                </div>
+            </div>
+        </form> 
+-->
+                
+        
+        <script src="/lib/jquery-2.1.4.min.js"></script> 
+        <script src="/controllers/scripts.js"></script>
     </body>
 </html>
