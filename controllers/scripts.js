@@ -79,8 +79,45 @@ $(document).ready(function(){
 
 function buildModifyUI(person_data){
     
-    var html = "<input type='text' value='" + person_data.name + "'></input>";
+  //window.open("modifyPerson.html","_self",false);  
+    
+    var html = "<input type='text' id='inputname' value='" + person_data.name + "'/>";
+    html += "<input type='text' id='inputaddress' value='" + person_data.address + "'/>";
+    html += "<input type='text' id='inputage' value='" + person_data.age + "'/>";
+    html += "<input type='button' value='Update' id='update'/>";
+    html += "<input type='button' value='Delete' id='delete'/>";
+
     $("body").html(html);
+    
+    $("#delete").click(function(){
+        
+       $.ajax({
+           method:'DELETE',
+           url:'http://localhost:3000/persons/id=' + person_data._id           
+       }).done(function(data){
+           
+           location.reload(true);
+       });
+        
+    }); 
+    
+    $("#update").click(function(){
+        
+        person_data.name = $("#inputname").val();
+        person_data.address = $("#inputaddress").val();
+        person_data.age = $("#inputage").val();
+        
+       $.ajax({
+           method:'PUT',
+           url:'http://localhost:3000/persons/',
+           data:person_data
+           
+       }).done(function(data){
+           
+           location.reload(true);
+       });
+        
+    });
 }
 
 /*
