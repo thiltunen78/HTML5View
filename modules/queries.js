@@ -16,13 +16,30 @@ exports.getAllPersons = function(req,res){
     });
 }
 
+// this function searches database by name or by begin letters of name
+exports.findPersonsByName = function(req,res){
+    
+    var name = req.params.nimi.split("=")[1];
+    
+    db.Person.find({name:{'$regex': '^' + name,'$options':'i'}},function(err,data){ //ilman hattua(^) hakee jos teksti sisältyy johonkin kohtaan nimiä
+        
+       if(err){           
+           res.send("Error");
+       }
+        else{
+            res.send(data);
+        }           
+    });
+}
+                          
 // this function saves new person information to our person collection
 exports.saveNewPerson = function(req,res){
     
     var personTemp = new db.Person(req.body);
     //save it to database
     personTemp.save(function(err,ok){
-        res.send("database action done");
+        // make a redirect to root context
+        res.redirect('/');
     });
 }
 

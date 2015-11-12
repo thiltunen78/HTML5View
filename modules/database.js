@@ -16,6 +16,12 @@ function connectionStatus(err,ok){
     }
 }
 
+var User = mongoose.model('User',{
+    username:{type:String,unique:true},
+    password:String,
+    friends:[{type:mongoose.Schema.Types.ObjectId,ref:'Person'}]
+});
+
 // luodaan malli collectionista
 var Person = mongoose.model('Person',{    
     name:String,

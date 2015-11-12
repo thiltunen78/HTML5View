@@ -73,8 +73,36 @@ $(document).ready(function(){
             }       
         });
         
-    });    
+    }); 
     
+    $("#search").click(function(){
+       
+        var text = $("#search_text").val();
+        
+        $.ajax({
+           method:'GET',
+           url:'http://localhost:3000/persons/nimi=' + text,          
+        
+        }).done(function(data){
+            console.log(data); 
+            
+            $("tbody").children().remove();
+            
+            // create table content 
+            for(var i=0;i<data.length;i++){            
+                var html =  "<tr>" +
+                        "<td>" + data[i].name + "</td>" +
+                        "<td>" + data[i].address + "</td>" +
+                        "<td>" + data[i].age + "</td>" +
+                        "<td><input type='button' id=" + 
+                        data[i]._id + " value='Modify'/></td>" +
+                        "</tr>";
+            
+                $(html).appendTo("tbody");
+            }; 
+           
+        });            
+    });    
 })
 
 function buildModifyUI(person_data){
