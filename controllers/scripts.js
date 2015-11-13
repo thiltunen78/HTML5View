@@ -17,7 +17,7 @@ $(document).ready(function(){
     var setting = {
         
         method:"GET",
-        url:"http://localhost:3000/persons/",
+        url:"http://localhost:3000/friends/username=" + localStorage['username'],
         dataType:"json"        
     };
     
@@ -81,7 +81,8 @@ $(document).ready(function(){
         
         $.ajax({
            method:'GET',
-           url:'http://localhost:3000/persons/nimi=' + text,          
+           url:'http://localhost:3000/persons/nimi=' + text,  
+           data:{user:localStorage.username},
         
         }).done(function(data){
             console.log(data); 
@@ -97,9 +98,25 @@ $(document).ready(function(){
                         "<td><input type='button' id=" + 
                         data[i]._id + " value='Modify'/></td>" +
                         "</tr>";
-            
+                           
                 $(html).appendTo("tbody");
             }; 
+            
+            //get all elements from DOM where element has attribute 'type' with value 'button'.
+            //then add event handler for click event for each of them
+            $("[type=button]").click(function(click_data){
+        
+                //loop trough all the values
+                for(var i=0;i<data.length;i++){
+                
+                    //Check if id from button matches one of person id
+                    if(click_data.currentTarget.id == data[i]._id)
+                    {
+                        buildModifyUI(data[i]);
+                        break;
+                    }
+                }       
+            });
            
         });            
     });    
@@ -121,7 +138,8 @@ function buildModifyUI(person_data){
         
        $.ajax({
            method:'DELETE',
-           url:'http://localhost:3000/persons/id=' + person_data._id           
+           url:'http://localhost:3000/persons/id=' + person_data._id,
+           data:{user:localStorage.username},
        }).done(function(data){
            
            location.reload(true);

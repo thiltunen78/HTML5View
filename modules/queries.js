@@ -21,7 +21,14 @@ exports.findPersonsByName = function(req,res){
     
     var name = req.params.nimi.split("=")[1];
     
-    db.Person.find({name:{'$regex': '^' + name,'$options':'i'}},function(err,data){ //ilman hattua(^) hakee jos teksti sisältyy johonkin kohtaan nimiä
+    console.log(req.query.user);
+    
+    db.Friends.find({username:req.query.user}).populate({path:'friends',match:{name:{'$regex': '^' + name,'$options':'i'}}}).exec(function(err,data){
+        
+        res.send(data[0].friends);
+    });
+    
+/*    db.Person.find({name:{'$regex': '^' + name,'$options':'i'}},function(err,data){ //ilman hattua(^) hakee jos teksti sisältyy johonkin kohtaan nimiä
         
        if(err){           
            res.send("Error");
@@ -29,7 +36,7 @@ exports.findPersonsByName = function(req,res){
         else{
             res.send(data);
         }           
-    });
+    });*/
 }
                           
 // this function saves new person information to our person collection
@@ -38,8 +45,15 @@ exports.saveNewPerson = function(req,res){
     var personTemp = new db.Person(req.body);
     //save it to database
     personTemp.save(function(err,ok){
-        // make a redirect to root context
-        res.redirect('/');
+        
+        db.Friends.update({username:req.body.user},
+                          {$push:{'friends':personTemp._id}},
+                         function(err,model){
+            
+            // make a redirect to root context
+            //res.redirect('/persons.html');
+            res.send("added stuff");
+        });        
     });
 }
 
@@ -56,7 +70,17 @@ exports.deletePerson = function(req,res){
             res.send(err.message);
         }
         else{
-            res.send("Delete Ok");
+            
+            db.Friends.update({username:req.body.user},
+                          {$pull:{'friends':id}},
+                         function(err,model){
+            
+                if(err){
+                    console.log(err.message);
+                }else{
+                    res.send("Delete Ok");
+                }
+            });                   
         }
     });
 }
@@ -72,5 +96,55 @@ exports.updatePerson = function(req,res){
     
     db.Person.update({_id:req.body._id},updateData,function(err){
        res.send("updated"); 
+    });
+}
+
+exports.registerFriend = function(req,res){
+
+    var friend = new db.Friends(req.body);
+    friend.save(function(err){
+    
+        if(err){
+            res.send({status:err.message});
+        }
+        else{
+            res.send({status:"Register succesful"});
+        }
+    });
+}
+
+exports.loginFriend = function(req,res){
+
+    var searchObject = {
+        username:req.body.username,
+        password:req.body.password
+    };
+    
+    db.Friends.find(searchObject,function(err,data){
+    
+        if(err){
+            res.send({status:err.message});   
+        }
+        else{
+            //=< 0 means wrong username or password
+            if(data.length > 0){
+                
+                res.send({status:"Ok"});            
+            }
+            else{
+                res.send({status:"Wrong username or password"});
+            }
+        }
+    });
+}
+
+exports.getFriendsByUsername = function(req,res){
+
+    var usern = req.params.username.split("=")[1];
+    db.Friends.find({username:usern}).populate('friends').exec(function(err,data){
+        
+        console.log(err);
+        console.log(data[0].friends);
+        res.send(data[0].friends);
     });
 }

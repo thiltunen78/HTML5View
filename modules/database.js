@@ -31,6 +31,7 @@ var Person = mongoose.model('Person',{
 
 //using exports object you expose the data to other modules
 exports.Person = Person;
+exports.Friends = User;
 
 exports.myFunction = function(){
     console.log("this is exported function");

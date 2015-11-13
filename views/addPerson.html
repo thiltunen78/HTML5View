@@ -5,16 +5,40 @@
         <title>Add new contact info</title>
         <link href="/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <link href="/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet">
+        <script src="../lib/jquery-2.1.4.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $("#sendBtn").click(function(){
+                    
+                    var data = {
+                        
+                        user:localStorage['username'],
+                        name:$("#name").val(),
+                        address:$("#address").val(),
+                        age:$("#age").val(),
+                    }
+                    
+                    $.ajax({
+                    
+                        method:'POST',
+                        url:'http://localhost:3000/persons',
+                        data:data,                        
+                    }).done(function(data){
+                        window.location = "./persons.html";    
+                    });
+                });
+            });            
+        </script>
     </head>
     <body>
         <h1>Add new contact info</h1>   
         
-        <form method="post" enctype="application/json" action="/persons">
-            <input type="text" required placeholder="Your full name" name="name"/>
-            <input type="text" required placeholder="Your full address" name="address"/>
-            <input type="number" required placeholder="Your age" name="age"/>
+        <form>
+            <input type="text" required placeholder="Your full name" id="name"/>
+            <input type="text" required placeholder="Your full address" id="address"/>
+            <input type="text" required placeholder="Your age" id="age"/>
             
-            <input type="submit" value="Send"/>
+            <input type="button" value="Send" id="sendBtn"/>
         </form>
         
 <!--
@@ -46,7 +70,7 @@
 -->
                 
         
-        <script src="/lib/jquery-2.1.4.min.js"></script> 
-        <script src="/controllers/scripts.js"></script>
+        <!--<script src="/lib/jquery-2.1.4.min.js"></script> 
+        <script src="/controllers/scripts.js"></script>-->
     </body>
 </html>
